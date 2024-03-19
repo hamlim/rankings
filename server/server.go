@@ -15,9 +15,9 @@ type Context struct {
 }
 
 type Response struct {
-	statusCode int
-	headers    map[string]string
-	body       string
+	StatusCode int
+	Headers    map[string]string
+	Body       string
 }
 
 func Create(port int, handleRequest func(ctx Context) (Response, error)) {
@@ -90,11 +90,11 @@ func handleConnection(conn net.Conn, handleRequest func(ctx Context) (Response, 
 		return
 	}
 
-	conn.Write([]byte(fmt.Sprintf("HTTP/1.1 %d OK\r\n", response.statusCode)))
-	for key, value := range response.headers {
+	conn.Write([]byte(fmt.Sprintf("HTTP/1.1 %d OK\r\n", response.StatusCode)))
+	for key, value := range response.Headers {
 		conn.Write([]byte(fmt.Sprintf("%s: %s\r\n", key, value)))
 	}
 	conn.Write([]byte("\r\n"))
-	conn.Write([]byte(response.body))
+	conn.Write([]byte(response.Body))
 }
 
