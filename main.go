@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-
-	"github.com/a-h/templ"
+	"github.com/hamlim/rankings/server"
 )
 
 func main() {
-	component := home("World!")
-	
-	http.Handle("/", templ.Handler(component))
-
-	fmt.Println("Listening on :3000")
-	http.ListenAndServe(":3000", nil)
+	server.Create(8080, func(ctx server.Context) (server.Response, error) { // Update the function signature
+		return server.Response{
+			StatusCode: 200,
+			Headers:    map[string]string{"Content-Type": "text/plain"},
+			Body:       "Hello, World!",
+		}, nil
+	})
 }
